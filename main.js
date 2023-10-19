@@ -112,6 +112,8 @@ function btnClick(){
             if(inputChange.innerText==="Ändra"){
                 inputChange.parentElement.children[1].disabled=false;
                 inputChange.parentElement.children[0].disabled=false;
+                inputChange.parentElement.children[1].setAttribute("style","background-color: white");
+                inputChange.parentElement.children[0].setAttribute("style","background-color: white");
                 inputChange.innerText="Spara";
                 return;
             } else {
