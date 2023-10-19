@@ -14,10 +14,10 @@ inputBtnDelete.addEventListener("click", function(){
     errorBox.style.cssText=`
     position: absolute;
     background-color: antiquewhite;
-    border: 5px solid black;
+    border: 5px solid lightgrey;
     top:100px;
     width: 25%;
-    height: 100px;
+    height: 200px;
     left: 0; 
     right: 0; 
     margin-left: auto; 
@@ -26,7 +26,7 @@ inputBtnDelete.addEventListener("click", function(){
     text-align:center;
     `
     // Skapar innehållet i diven
-    errorBox.innerHTML="<p>Bekräfta Radering Av Kontaktlistan</p> <button id=btnOk style=margin-right:10px >OK</button><button id=btnAvbryt style=margin-left:10px>AVBRYT</button"
+    errorBox.innerHTML="<div id=errorbox3><p>Kunskapskontroll2.exe</p></div><div id=errorbox2></div><p style=margin-top:80px>Bekräfta Radering Av Kontaktlistan</p> <button id=btnOk style=margin-right:10px >OK</button><button id=btnAvbryt style=margin-left:10px>AVBRYT</button"
     
     // Ränsar listan från alla kontakter om OK är tryckt
     btnOk.addEventListener("click", function(e){
@@ -40,23 +40,36 @@ inputBtnDelete.addEventListener("click", function(){
         e.target.parentNode.remove();
     })
 
-
-
-
-
-
-
-    // if (prompt("Vill du verkligen radera allt? y/n")=="y"){
-    //     contactList.innerHTML="";
-    // } else {
-    //     return;
-    // };
 });
 
 // Skapar li med värde från användaren
 function btnClick(){
-    if(inputName.value==="" || inputNum.value===""){
+    if(inputName.value==="" || inputNum.value==="" ){
         document.getElementById("errorText").innerHTML="<p style=color:red>Fälten kan inte vara tomma</p>"
+        inputName.setAttribute("style","border-color: red");
+        inputNum.setAttribute("style","border-color: red");
+        setTimeout(function(){
+            inputName.setAttribute("style","border-color: black");  
+            inputNum.setAttribute("style","border-color: black");  
+        }, 1000)
+
+        // Kollar om input nummer är bara siffror
+    } else if (isNaN(inputNum.value)===true){
+        document.getElementById("errorText").innerHTML="<p style=color:red>Nummer får inte ha bokstäver</p>"
+        inputNum.setAttribute("style","border-color: red");
+        setTimeout(function(){
+            inputNum.setAttribute("style","border-color: black");  
+        }, 1000)
+
+        // Kollar om input namn är bara bokstäver
+    } else if (isNaN(inputName.value)===false){
+        document.getElementById("errorText").innerHTML="<p style=color:red>Namn får inte ha siffror</p>"
+        inputName.setAttribute("style","border-color: red");
+        setTimeout(function(){
+            inputName.setAttribute("style","border-color: black");  
+        }, 1000)
+
+        // Skapar användaren
     } else {
         document.getElementById("errorText").innerHTML="";
         counterLi+=1;
@@ -79,7 +92,7 @@ function btnClick(){
             border: 5px solid lightgrey;
             top:100px;
             width: 25%;
-            height: 100px;
+            height: 200px;
             left: 0; 
             right: 0; 
             margin-left: auto; 
@@ -87,9 +100,10 @@ function btnClick(){
             z-index:99;
             text-align:center;
             `
+
             document.getElementById("mainContent").style.display="none";
             // Skapar innehållet i diven
-            errorBox.innerHTML="<p>Bekräfta Radering Av "+inputChange.parentElement.children[0].value+" "+inputChange.parentElement.children[1].value+"</p> <button id=btnOk style=margin-right:10px >OK</button><button id=btnAvbryt style=margin-left:10px>AVBRYT</button"
+            errorBox.innerHTML="<div id=errorbox3><p>Kunskapskontroll2.exe</p></div><div id=errorbox2></div><p style=margin-top:80px>Bekräfta Radering Av "+inputChange.parentElement.children[0].value+" "+inputChange.parentElement.children[1].value+"</p> <button id=btnOk style=margin-right:10px >OK</button><button id=btnAvbryt style=margin-left:10px>AVBRYT</button"
             // Ränsar listan från alla kontakter om OK är tryckt
             btnOk.addEventListener("click", function(e){
                 inputChange.parentElement.remove();
@@ -108,32 +122,51 @@ function btnClick(){
         //En switch som ändrar eller sparar en specifik kontakt
         const inputChange = document.getElementById("inputChange"+counterLi)
             inputChange.addEventListener("click", function (){
+                
                 // Checkar om knappen man tryckt på är ändra eller spara
-            if(inputChange.innerText==="Ändra"){
-                inputChange.parentElement.children[1].disabled=false;
-                inputChange.parentElement.children[0].disabled=false;
-                inputChange.parentElement.children[1].setAttribute("style","background-color: white");
-                inputChange.parentElement.children[0].setAttribute("style","background-color: white");
-                inputChange.innerText="Spara";
-                return;
-            } else {
-                if(inputChange.parentElement.children[1].value==="" || inputChange.parentElement.children[0].value===""){
+                // Checkar så fälten inte är tomma
+                if(inputChange.parentElement.children[1].value==="" || inputChange.parentElement.children[0].value===""|| Number.isNaN(inputChange.parentElement.children[1].value)|| Number.isNaN(inputChange.parentElement.children[0].value)){
+                    document.getElementById("errorText").innerHTML="<p style=color:red>Fälten kan inte vara tomma</p>"
                     inputChange.parentElement.children[1].setAttribute("style","border-color: red");
                     inputChange.parentElement.children[0].setAttribute("style","border-color: red");
                     setTimeout(function(){
                         inputChange.parentElement.children[1].setAttribute("style","border-color: black");
                         inputChange.parentElement.children[0].setAttribute("style","border-color: black");
                     }, 1000)
-                } else{
+
+                }else if(inputChange.innerText==="Ändra"){
+                        inputChange.parentElement.children[1].disabled=false;
+                        inputChange.parentElement.children[0].disabled=false;
+                        inputChange.parentElement.children[1].setAttribute("style","background-color: white");
+                        inputChange.parentElement.children[0].setAttribute("style","background-color: white");
+                        inputChange.innerText="Spara";
+                        return;
+
+                        // Checkar om namn har siffror
+                }else if (isNaN(inputChange.parentElement.children[0].value)===false){
+                        document.getElementById("errorText").innerHTML="<p style=color:red>Namn får inte ha siffror</p>"
+                        inputChange.parentElement.children[0].setAttribute("style","border-color: red");
+                        setTimeout(function(){
+                            inputChange.parentElement.children[0].setAttribute("style","border-color: black");
+                        }, 1000)
+
+                        // Checkar om nummer har bokstäver
+                }else if (isNaN(inputChange.parentElement.children[1].value)===true){
+                        document.getElementById("errorText").innerHTML="<p style=color:red>Nummer får inte ha bokstäver</p>"
+                        inputChange.parentElement.children[1].setAttribute("style","border-color: red");
+                        setTimeout(function(){
+                            inputChange.parentElement.children[1].setAttribute("style","border-color: black");  
+                        }, 1000)
+
+                        // Släpper genom ändringarna om kraven är uppfyllda
+                }else{
                     inputChange.parentElement.children[1].setAttribute("style","background-color: lightblue");
                     inputChange.parentElement.children[0].setAttribute("style","background-color: lightblue");
                     inputChange.parentElement.children[1].disabled=true;
                     inputChange.parentElement.children[0].disabled=true;
                     inputChange.innerText="Ändra";
                     return;
-
-                }
-            };
+                };
         });   
     }
 };
